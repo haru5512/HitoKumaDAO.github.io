@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HitoKumaDAO - 街と未来をつなぐコミュニティ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ヘッダー */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* メインコンテンツ */
+        main {
+            margin-top: 80px;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="3" fill="rgba(255,255,255,0.3)"/><circle cx="800" cy="300" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="400" cy="600" r="3" fill="rgba(255,255,255,0.3)"/><circle cx="700" cy="800" r="2" fill="rgba(255,255,255,0.3)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-20px) rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        /* セクション共通 */
+        .section {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .section:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        /* 実績セクション */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* メリットカード */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            border-left: 5px solid #667eea;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        /* 参加フロー */
+        .flow {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            text-align: center;
+            max-width: 200px;
+            margin: 1rem;
+        }
+
+        .flow-number {
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #667eea;
+            margin: 0 1rem;
+        }
+
+        /* テスティモニアル */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 4rem;
+            color: #667eea;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* バッジセクション */
+        .badges {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+
+        .badge {
+            text-align: center;
+            margin: 1rem;
+        }
+
+        .badge-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 最終CTA */
+        .final-cta {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .final-cta h2 {
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .button-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .button-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* フッター */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .flow {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .stats,
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🐻 HitoKumaDAO</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#benefits">参加メリット</a></li>
+                <li><a href="#join">参加方法</a></li>
+                <li><a href="#contact">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ヒーローセクション -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>街と未来を、あなたとつなぐ。</h1>
+                    <div class="hero-subtitle">
+                        人と人、町と世界をゆるく結び直すコミュニティ DAO<br>
+                        地域と Web3、ゆるく混ざれば面白くなる
+                    </div>
+                    <a href="#" class="cta-button">今すぐ Discord でのぞいてみる 🚀</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 実績セクション -->
+        <section class="section">
+            <div class="container">
+                <h2>みんなで作ってきた実績</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <span class="stat-number">142</span>
+                        <div class="stat-label">現在のメンバー数</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">27</span>
+                        <div class="stat-label">完了したプロジェクト</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">15</span>
+                        <div class="stat-label">開催済みオフラインイベント</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参加メリット -->
+        <section class="section" id="benefits">
+            <div class="container">
+                <h2>HitoKumaDAOで得られる3つのこと</h2>
+                <div class="benefits">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📚</div>
+                        <div class="benefit-title">学ぶ</div>
+                        <p>無料ウェビナー & 勉強会<br>
+                        Web3の基礎からDAO運営まで、みんなで学んでいます</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🤝</div>
+                        <div class="benefit-title">つながる</div>
+                        <p>オンラインもオフラインも "ゆるい縁"<br>
+                        気軽に参加できる雰囲気を大切にしています</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🚀</div>
+                        <div class="benefit-title">挑戦する</div>
+                        <p>小さなアイデアを DAO で実験できる<br>
+                        「やってみたい」をサポートする仕組みがあります</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参加フロー -->
+        <section class="section" id="join">
+            <div class="container">
+                <h2>参加は簡単3ステップ</h2>
+                <div class="flow">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <h3>Discord 参加</h3>
+                        <p>まずはDiscordサーバーに参加</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <h3>自己紹介</h3>
+                        <p>簡単な自己紹介をお願いします</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <h3>興味ロール選択</h3>
+                        <p>興味のある分野を選んでください</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <p>見るだけ参加も大歓迎！まずは気軽にDiscordを覗いてみてください</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- メンバーの声 -->
+        <section class="section">
+            <div class="container">
+                <h2>参加してよかった！メンバーの声</h2>
+                <div class="testimonials">
+                    <div class="testimonial">
+                        <div class="testimonial-text">
+                            Web3って難しそうだったけど、ゆるい雰囲気で質問しやすくて助かってます！
+                        </div>
+                        <div class="testimonial-author">たなかさん（エンジニア）</div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-text">
+                            地域のイベント企画を手伝ってもらえて、一人じゃできないことが実現できました
+                        </div>
+                        <div class="testimonial-author">やまださん（地域活動家）</div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-text">
+                            オンラインだけじゃなくて、実際に会えるイベントもあるのがいいですね
+                        </div>
+                        <div class="testimonial-author">さとうさん（デザイナー）</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- バッジシステム -->
+        <section class="section">
+            <div class="container">
+                <h2>がんばった分だけもらえるバッジ</h2>
+                <div class="badges">
+                    <div class="badge">
+                        <div class="badge-icon">🎖️</div>
+                        <div>初参加バッジ</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">🎪</div>
+                        <div>イベント参加バッジ</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">🏆</div>
+                        <div>プロジェクト完遂バッジ</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">⭐</div>
+                        <div>コミュニティ貢献バッジ</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 最終CTA -->
+        <section class="final-cta">
+            <div class="container">
+                <h2>一緒にやってみる？</h2>
+                <div class="button-group">
+                    <a href="#" class="button button-primary">ちょっと覗く（Discord）</a>
+                    <a href="#" class="button button-secondary">気軽に質問する</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 HitoKumaDAO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 数値カウントアップアニメーション
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+            }, 20);
+        }
+
+        // スクロール時にアニメーション開始
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const numbers = entry.target.querySelectorAll('.stat-number');
+                    numbers.forEach(num => {
+                        const target = parseInt(num.textContent);
+                        animateCounter(num, target);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        observer.observe(document.querySelector('.stats'));
+
+        // スムーススクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
